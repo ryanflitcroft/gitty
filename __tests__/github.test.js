@@ -23,7 +23,10 @@ describe('gitty routes', () => {
   });
 
   it('it should be able to sign in and redirect users back to dashboard', async () => {
-    const res = await request(app).get('/api/v1/github/login/callback');
+    const res = await request
+      .agent(app)
+      .get('/api/v1/github/login/callback?code=42')
+      .redirects(1);
     expect(res.req.path).toEqual('/api/v1/posts');
   });
 });
