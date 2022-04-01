@@ -2,6 +2,8 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+const GithubService = require('../lib/services/GithubService');
+const GithubUser = require('../lib/models/GithubUser');
 
 jest.mock('../lib/utils/github');
 
@@ -30,5 +32,30 @@ describe('gitty routes', () => {
     expect(res.req.path).toEqual('/api/v1/posts');
   });
 
-  it('should allow authenticated users to insert an instance of Post to posts', async () => {});
+  it('should allow authenticated users to insert an instance of Post to posts', async () => {
+    // await request(app).get('/api/v1/github/login');
+    // const user = await request
+    //   .agent(app)
+    //   .get('/api/v1/github/login/callback?code=42')
+    //   .redirects(1);
+    const user = await GithubUser.insert({
+      username: 'ryan',
+      avatar: 'ryan_1.png',
+      email: 'ryan@test.com',
+    });
+
+    console.log('!!user!!', user);
+
+    const res = await request.agent(app).post('/api/v1/posts').send({
+      title: 'Big news!!',
+      description: '...cant tell you what though!!',
+    });
+
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      title: 'Big news!!',
+      description: '...cant tell you what though!!',
+      createdAt: expect.any(String),
+    });
+  });
 });
