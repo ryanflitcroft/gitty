@@ -3,7 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 
-// jest.mock('../lib/utils/github');
+jest.mock('../lib/utils/github');
 
 describe('gitty routes', () => {
   beforeEach(() => {
@@ -24,5 +24,6 @@ describe('gitty routes', () => {
 
   it('it should be able to sign in and redirect users back to dashboard', async () => {
     const res = await request(app).get('/api/v1/github/login/callback');
+    expect(res.req.path).toEqual('/api/v1/posts');
   });
 });
