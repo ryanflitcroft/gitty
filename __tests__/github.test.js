@@ -29,4 +29,6 @@ describe('gitty routes', () => {
       .redirects(1);
     expect(res.req.path).toEqual('/api/v1/posts');
   });
+
+  it('should allow authenticated users to insert an instance of Post to posts', async () => {});
 });
