@@ -65,6 +65,13 @@ describe('gitty routes', () => {
   it('should allow authenticated users to get a list of each instance of Post from posts', async () => {
     const agent = request.agent(app);
 
+    let res = await agent.get('/api/v1/posts');
+
+    expect(res.body).toEqual({
+      message: 'You must be signed in!',
+      status: 401,
+    });
+
     await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
     for (let i = 0; i < 3; i++) {
       await agent.post('/api/v1/posts').send({
@@ -73,7 +80,7 @@ describe('gitty routes', () => {
       });
     }
 
-    const res = await agent.get('/api/v1/posts');
+    res = await agent.get('/api/v1/posts');
 
     expect(res.body).toEqual([
       {
