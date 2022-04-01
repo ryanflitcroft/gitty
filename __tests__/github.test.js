@@ -61,4 +61,39 @@ describe('gitty routes', () => {
       status: 401,
     });
   });
+
+  it('should allow authenticated users to get a list of each instance of Post from posts', async () => {
+    const agent = request.agent(app);
+
+    await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
+    for (let i = 0; i < 3; i++) {
+      await agent.post('/api/v1/posts').send({
+        title: 'Big news!!',
+        description: '...cant tell you what though!!',
+      });
+    }
+
+    const res = await agent.get('/api/v1/posts');
+
+    expect(res.body).toEqual([
+      {
+        id: expect.any(String),
+        createdAt: expect.any(String),
+        title: 'Big news!!',
+        description: '...cant tell you what though!!',
+      },
+      {
+        id: expect.any(String),
+        createdAt: expect.any(String),
+        title: 'Big news!!',
+        description: '...cant tell you what though!!',
+      },
+      {
+        id: expect.any(String),
+        createdAt: expect.any(String),
+        title: 'Big news!!',
+        description: '...cant tell you what though!!',
+      },
+    ]);
+  });
 });
