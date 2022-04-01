@@ -37,8 +37,6 @@ describe('gitty routes', () => {
       .get('/api/v1/github/login/callback?code=42')
       .redirects(1);
 
-    console.log('githubuser, test: ', user);
-
     const res = await agent.post('/api/v1/posts').send({
       title: 'Big news!!',
       description: '...cant tell you what though!!',
@@ -49,6 +47,18 @@ describe('gitty routes', () => {
       title: 'Big news!!',
       description: '...cant tell you what though!!',
       createdAt: expect.any(String),
+    });
+  });
+
+  it('should not allow unauthenticated users to insert an instance of Post to posts', async () => {
+    const res = await request(app).post('/api/v1/posts').send({
+      title: 'Big news!!',
+      description: '...cant tell you what though!!',
+    });
+
+    expect(res.body).toEqual({
+      message: 'You must be signed in!',
+      status: 401,
     });
   });
 });
