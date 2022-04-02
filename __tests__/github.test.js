@@ -3,6 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const GithubUser = require('../lib/models/GithubUser');
+const res = require('express/lib/response');
 
 jest.mock('../lib/utils/github');
 
@@ -31,11 +32,20 @@ describe('gitty routes', () => {
     expect(res.req.path).toEqual('/api/v1/posts');
   });
 
+  it('should be able to delete a users cookie', async () => {
+    const agent = request.agent(app);
+    await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
+    const res = await agent.delete('/api/v1/github');
+
+    expect(res.body).toEqual({
+      message: 'Signed out successfully!',
+      success: true,
+    });
+  });
+
   it('should allow authenticated users to insert an instance of Post to posts', async () => {
     const agent = request.agent(app);
-    const user = await agent
-      .get('/api/v1/github/login/callback?code=42')
-      .redirects(1);
+    await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
 
     const res = await agent.post('/api/v1/posts').send({
       title: 'Big news!!',
