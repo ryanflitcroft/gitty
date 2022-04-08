@@ -13,7 +13,7 @@ describe('routes for quotes', () => {
   });
 
   it.only('should be able to fetch a list of 3 quotes from programming-quotes-api', async () => {
-    const res = await request(app).get('/api/v1/quotes/programming');
+    const res = await request(app).get('/api/v1/quotes/programming/3');
 
     expect(res.body).toEqual([
       {
