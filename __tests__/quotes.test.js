@@ -12,7 +12,7 @@ describe('routes for quotes', () => {
     pool.end();
   });
 
-  it.only('should be able to fetch a list of quotes from programming-quotes-api', async () => {
+  it.only('should be able to fetch a list of quotes from programming-quotes-api, where the length of the list is dependent on the url params given', async () => {
     let res = await request(app).get('/api/v1/quotes/programming/1');
 
     expect(res.body).toEqual([
