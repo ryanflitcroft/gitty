@@ -44,8 +44,24 @@ describe('routes for quotes', () => {
   });
 
   it.only('should be able to get a list of quotes from futuramaapi, where the length of the list is dependent on the url params given', async () => {
-    const res = await request(app).get('/api/v1/quotes/futurama/1');
+    let res = await request(app).get('/api/v1/quotes/futurama/1');
     expect(res.body).toEqual([
+      {
+        author: expect.any(String),
+        description: expect.any(String),
+      },
+    ]);
+
+    res = await request(app).get('/api/v1/quotes/futurama/3');
+    expect(res.body).toEqual([
+      {
+        author: expect.any(String),
+        description: expect.any(String),
+      },
+      {
+        author: expect.any(String),
+        description: expect.any(String),
+      },
       {
         author: expect.any(String),
         description: expect.any(String),
