@@ -69,7 +69,7 @@ describe('routes for quotes', () => {
     ]);
   });
 
-  it.only('should be able to get a list of quotes from futuramaapi, where the length of the list is dependent on the url params given', async () => {
+  it('should be able to get a list of quotes from futuramaapi, where the length of the list is dependent on the url params given', async () => {
     let res = await request(app).get('/api/v1/quotes/quotable/1');
     expect(res.body).toEqual([
       {
@@ -95,7 +95,7 @@ describe('routes for quotes', () => {
     ]);
   });
 
-  it('should be able to get a list of quotes, with one quote from each api', async () => {
+  it.only('should be able to get a list of quotes, with one quote from each api', async () => {
     const res = await request(app).get('/api/v1/quotes');
     expect(res.body).toEqual([
       {
