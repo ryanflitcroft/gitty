@@ -12,8 +12,17 @@ describe('routes for quotes', () => {
     pool.end();
   });
 
-  it.only('should be able to fetch a list of 3 quotes from programming-quotes-api', async () => {
-    const res = await request(app).get('/api/v1/quotes/programming/3');
+  it.only('should be able to fetch a list of quotes from programming-quotes-api', async () => {
+    let res = await request(app).get('/api/v1/quotes/programming/1');
+
+    expect(res.body).toEqual([
+      {
+        author: expect.any(String),
+        description: expect.any(String),
+      },
+    ]);
+
+    res = await request(app).get('/api/v1/quotes/programming/3');
 
     expect(res.body).toEqual([
       {
