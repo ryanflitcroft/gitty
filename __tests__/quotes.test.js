@@ -94,4 +94,22 @@ describe('routes for quotes', () => {
       },
     ]);
   });
+
+  it('should be able to get a list of quotes, with one quote from each api', async () => {
+    const res = await request(app).get('/api/v1/quotes');
+    expect(res.body).toEqual([
+      {
+        author: expect.any(String),
+        description: expect.any(String),
+      },
+      {
+        author: expect.any(String),
+        description: expect.any(String),
+      },
+      {
+        author: expect.any(String),
+        description: expect.any(String),
+      },
+    ]);
+  });
 });
